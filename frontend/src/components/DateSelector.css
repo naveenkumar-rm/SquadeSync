@@ -1,0 +1,64 @@
+.date-selector-container {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.date-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.date-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.date-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.date-pill:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.date-pill.selected {
+  background-color: var(--color-primary);
+  color: #000;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.date-day-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.date-day-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.date-month-name {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}

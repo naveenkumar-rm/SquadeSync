@@ -1,0 +1,79 @@
+.my-games-page {
+  /* Page wrapper */
+}
+
+/* Premium Segmented Control Tabs */
+.dream-tabs {
+  display: flex;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 0.25rem;
+  margin-bottom: 2rem;
+  position: relative;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dream-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.dream-tab.active {
+  color: white;
+  background-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.dream-tab:hover:not(.active) {
+  color: var(--color-text);
+  background-color: var(--color-surface-hover);
+}
+
+/* Empty State Card */
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.empty-state-icon {
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-state-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-card p {
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+  max-width: 300px;
+}
+
+.my-games-content {
+  min-height: 50vh;
+}

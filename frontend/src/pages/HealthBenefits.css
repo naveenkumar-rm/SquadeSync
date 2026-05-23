@@ -1,0 +1,78 @@
+.health-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.health-hero {
+  background: radial-gradient(circle at 10% 20%, rgba(163, 230, 53, 0.1) 0%, var(--color-bg) 90%);
+  padding: 6rem 0;
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.health-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.health-hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+}
+
+.health-hero p {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.benefit-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  transition: all var(--transition-normal);
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 30px -10px rgba(163, 230, 53, 0.05);
+}
+
+.benefit-icon {
+  background-color: rgba(163, 230, 53, 0.1);
+  color: var(--color-primary);
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.benefit-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.benefit-text {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.health-cta {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}

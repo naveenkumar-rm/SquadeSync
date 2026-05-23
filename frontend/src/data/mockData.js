@@ -1,0 +1,163 @@
+export const currentUser = {
+  id: 'u1',
+  name: 'Alex Mercer',
+  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
+  reliability: 98,
+  gamesPlayed: 42
+};
+
+export const initialMatches = [
+  {
+    id: 'm1',
+    title: '7v7 Casual Evening Match',
+    sport: 'Football',
+    gender: 'Mixed',
+    location: 'Powerleague Shoreditch',
+    address: 'Braithwaite St, London E1 6GJ',
+    lat: 51.5235,
+    lng: -0.0766,
+    date: '2026-05-05',
+    time: '19:00',
+    duration: 60,
+    price: 8.50,
+    pitchType: '3G Artificial',
+    maxPlayers: 14,
+    currentPlayers: [
+      { id: 'u2', name: 'John D.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John' },
+      { id: 'u3', name: 'Sarah M.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah' },
+      { id: 'u4', name: 'Mike T.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mike' },
+    ],
+    host: { id: 'u2', name: 'John D.' },
+    rules: 'No slide tackles. Roll-on roll-off subs. Be respectful.'
+  },
+  {
+    id: 'm1b',
+    title: '5v5 Fast Paced Game',
+    sport: 'Football',
+    gender: 'Men Only',
+    location: 'Powerleague Shoreditch',
+    address: 'Braithwaite St, London E1 6GJ',
+    lat: 51.5235,
+    lng: -0.0766,
+    date: '2026-05-05',
+    time: '20:30',
+    duration: 60,
+    price: 7.00,
+    pitchType: '3G Artificial',
+    maxPlayers: 10,
+    currentPlayers: [
+      { id: 'u2', name: 'John D.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John' }
+    ],
+    host: { id: 'u2', name: 'John D.' },
+    rules: 'High intensity 5 a side.'
+  },
+  {
+    id: 'c1',
+    title: 'T20 Tape Ball Cricket',
+    sport: 'Cricket',
+    gender: 'Men Only',
+    location: 'Regent\'s Park Hub',
+    address: 'Regents Park, London NW1 4RU',
+    lat: 51.5313,
+    lng: -0.1565,
+    date: '2026-05-05',
+    time: '14:00',
+    duration: 180,
+    price: 12.00,
+    pitchType: 'Grass',
+    maxPlayers: 22,
+    currentPlayers: [
+      { id: 'u2', name: 'John D.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John' },
+      { id: 'u8', name: 'Raj P.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Raj' }
+    ],
+    host: { id: 'u8', name: 'Raj P.' },
+    rules: 'Tape ball provided. Bring your own bats if possible.'
+  },
+  {
+    id: 'm2',
+    title: '5v5 Lunchtime Game',
+    sport: 'Football',
+    gender: 'Mixed',
+    location: 'Goals Wimbledon',
+    address: 'Beverley Way, London KT3 4PH',
+    lat: 51.4055,
+    lng: -0.2335,
+    date: '2026-05-06',
+    time: '13:00',
+    duration: 60,
+    price: 6.00,
+    pitchType: 'Astroturf',
+    maxPlayers: 10,
+    currentPlayers: [
+      { id: 'u6', name: 'David B.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=David' },
+      { id: 'u7', name: 'Chris K.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Chris' },
+    ],
+    host: { id: 'u6', name: 'David B.' },
+    rules: 'Standard 5-a-side rules. Goalie cannot leave the box.'
+  },
+  {
+    id: 'c2',
+    title: 'Sunday Friendly Cricket',
+    sport: 'Cricket',
+    gender: 'Mixed',
+    location: 'Victoria Park',
+    address: 'Victoria Park, London E9 7DD',
+    lat: 51.5367,
+    lng: -0.0402,
+    date: '2026-05-06',
+    time: '10:00',
+    duration: 240,
+    price: 15.00,
+    pitchType: 'Astro Wicket',
+    maxPlayers: 22,
+    currentPlayers: Array.from({ length: 11 }, (_, i) => ({
+      id: `u${i+20}`,
+      name: `Player ${i+1}`,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=Cricketer${i}`
+    })),
+    host: { id: 'u20', name: 'Emma W.' },
+    rules: 'Hard ball cricket. Full protective gear required.'
+  },
+  {
+    id: 'm3',
+    title: '9v9 Competitive Weekend',
+    sport: 'Football',
+    gender: 'Men Only',
+    location: 'Regent\'s Park Pitches',
+    address: 'Regents Park, London NW1 4NU',
+    lat: 51.5313,
+    lng: -0.1565,
+    date: '2026-05-07',
+    time: '10:00',
+    duration: 90,
+    price: 10.00,
+    pitchType: 'Grass',
+    maxPlayers: 18,
+    currentPlayers: Array.from({ length: 15 }, (_, i) => ({
+      id: `u${i+10}`,
+      name: `Player ${i+1}`,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=Player${i}`
+    })),
+    host: { id: 'u10', name: 'Coach Steve' },
+    rules: 'Full rules, offsides apply. Competitive game.'
+  },
+  {
+    id: 'm4',
+    title: '7v7 Evening Casual',
+    sport: 'Football',
+    gender: 'Women Only',
+    location: 'Regent\'s Park Pitches',
+    address: 'Regents Park, London NW1 4NU',
+    lat: 51.5313,
+    lng: -0.1565,
+    date: '2026-05-07',
+    time: '18:30',
+    duration: 60,
+    price: 8.00,
+    pitchType: 'Grass',
+    maxPlayers: 14,
+    currentPlayers: [],
+    host: { id: 'u11', name: 'Sarah T.' },
+    rules: 'Casual game, all skill levels welcome.'
+  }
+];

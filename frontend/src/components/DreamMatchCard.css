@@ -1,0 +1,138 @@
+.dream-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 1rem;
+}
+
+.dream-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+}
+
+.dream-card-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.dream-card-body {
+  padding: 1.25rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.dream-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  text-align: center;
+}
+
+.dream-team-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.dream-team-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dream-team-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dream-vs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 0 0.5rem;
+}
+
+.dream-time-status {
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.status-upcoming {
+  color: var(--color-primary);
+  background-color: rgba(163, 230, 53, 0.1);
+}
+
+.status-live {
+  color: #ef4444; /* red */
+  background-color: rgba(239, 68, 68, 0.1);
+  animation: pulse 2s infinite;
+}
+
+.status-completed {
+  color: var(--color-text-muted);
+  background-color: var(--color-surface-hover);
+}
+
+.dream-match-title {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+.dream-card-footer {
+  background-color: var(--color-surface-hover);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.dream-footer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
