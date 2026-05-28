@@ -25,26 +25,23 @@ export default function ContactUs() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     })
-    .then(res => {
-      if (!res.ok) throw new Error('Submission failed');
-      return res.json();
-    })
-    .then(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    })
-    .catch(err => {
-      console.error(err);
-      setStatus('error');
-    });
+      .then(res => {
+        if (!res.ok) throw new Error('Submission failed');
+        return res.json();
+      })
+      .then(() => {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      })
+      .catch(err => {
+        console.error(err);
+        setStatus('error');
+      });
   };
 
   return (
     <div className="contact-page container py-12" style={{ maxWidth: '800px' }}>
       <div className="text-center mb-10 fade-in-up">
-        <div className="inline-flex items-center justify-center p-4 mb-4 rounded-full" style={{ backgroundColor: 'var(--color-surface-hover)' }}>
-          <Mail size={32} className="text-primary" />
-        </div>
         <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
         <p className="text-muted text-lg max-w-2xl mx-auto">
           Have a question about PitchConnect, need help organizing a match, or want to report an issue? Drop us a message and our team will get back to you shortly.
@@ -94,9 +91,9 @@ export default function ContactUs() {
               </div>
             )}
 
-            <Button 
-              type="submit" 
-              disabled={status === 'submitting'} 
+            <Button
+              type="submit"
+              disabled={status === 'submitting'}
               className="w-full flex justify-center items-center gap-2 mt-4"
               style={{ fontSize: '1.1rem', padding: '0.75rem' }}
             >

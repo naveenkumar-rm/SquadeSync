@@ -18,11 +18,11 @@ public class DataSeeder {
     public CommandLineRunner seedData(UserRepository userRepository, MatchRepository matchRepository) {
         return args -> {
             if (userRepository.count() == 0) {
-                User admin = new User("admin", "System Admin", "admin@pitchconnect.com", "admin", "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin", 100, 0);
-                User alex = new User("u1", "Alex Mercer", "alex@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex", 98, 42);
-                User john = new User("u2", "John D.", "john@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=John", 95, 30);
-                User sarah = new User("u3", "Sarah M.", "sarah@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", 90, 20);
-                User mike = new User("u4", "Mike T.", "mike@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=Mike", 85, 10);
+                User admin = new User("admin", "System Admin", "admin@pitchconnect.com", "admin", "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin", 100, 0, null, null, new ArrayList<>());
+                User alex = new User("u1", "Alex Mercer", "alex@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex", 98, 42, null, null, new ArrayList<>());
+                User john = new User("u2", "John D.", "john@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=John", 95, 30, null, null, new ArrayList<>());
+                User sarah = new User("u3", "Sarah M.", "sarah@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", 90, 20, null, null, new ArrayList<>());
+                User mike = new User("u4", "Mike T.", "mike@example.com", "password", "https://api.dicebear.com/7.x/avataaars/svg?seed=Mike", 85, 10, null, null, new ArrayList<>());
                 
                 userRepository.saveAll(List.of(admin, alex, john, sarah, mike));
 

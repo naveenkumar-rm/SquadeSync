@@ -18,10 +18,24 @@ let DefaultIcon = L.icon({
   iconAnchor: [12, 41]
 });
 L.Marker.prototype.options.icon = DefaultIcon;
-export default function MatchDetails({ matches, joinMatch, isAuthenticated }) {
+export default function MatchDetails({ matches, joinMatch, isAuthenticated, currentUser }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const match = matches.find(m => m.id === id);
+  const [userTeams, setUserTeams] = useState([]);
+  const [showTeamSelect, setShowTeamSelect] = useState(false);
+
+  React.useEffect(() => {
+    if (isAuthenticated && currentUser) {
+      fetch('http://localhost:8081/api/teams')
+        .then(res => res.json())
+        .then(data => {
+          const myTeams = data.filter(t => t.captain?.id === currentUser.id);
+          setUserTeams(myTeams);
+        })
+        .catch(err => console.error(err));
+    }
+  }, [isAuthenticated, currentUser]);
 
   if (!match) {
     return <div className="container py-12 text-center text-xl">Match not found</div>;
@@ -30,8 +44,8 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated }) {
   const [teamSize, setTeamSize] = useState(1);
   const availableSpots = match.maxPlayers - match.currentPlayers.length;
   const isFull = availableSpots <= 0;
-  // Check if current user is already in the game (simulated by checking an ID we use for joining, e.g., 'u1')
-  const isJoined = match.currentPlayers.some(p => p.id === 'u1');
+  // Check if current user is already in the game 
+  const isJoined = isAuthenticated && currentUser && match.currentPlayers.some(p => p.id === currentUser.id);
 
   const handleJoin = () => {
     if (!isAuthenticated) {
@@ -41,6 +55,32 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated }) {
     if (!isJoined && !isFull && teamSize <= availableSpots) {
       joinMatch(match.id, teamSize);
     }
+  };
+
+  const handleJoinAsTeam = (team) => {
+    if (!isAuthenticated) return;
+    
+    if (team.members.length > availableSpots) {
+      alert(`Your team has ${team.members.length} members but only ${availableSpots} spots are available.`);
+      return;
+    }
+
+    fetch(`http://localhost:8081/api/matches/${match.id}/join-team/${team.id}`, {
+      method: 'POST'
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw new Error('Failed to join as team');
+    })
+    .then(updatedMatch => {
+      // In a real app we'd update global state here, but we can just reload or call a callback
+      window.location.reload();
+    })
+    .catch(err => {
+      alert(err.message);
+    });
   };
 
   return (
@@ -134,7 +174,7 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated }) {
               {teamSize > 1 && <span className="text-sm text-muted ml-2">(₹{match.price.toFixed(2)} each)</span>}
             </div>
             
-            {!isJoined && !isFull && (
+            {!isJoined && !isFull && !showTeamSelect && (
               <div className="mb-6 flex items-center justify-between">
                 <label className="text-sm font-medium">Players</label>
                 <div className="flex items-center gap-2">
@@ -145,14 +185,41 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated }) {
               </div>
             )}
 
-            {isJoined ? (
+            {showTeamSelect ? (
+              <div className="mb-4">
+                <h4 className="text-md font-bold mb-2">Select a Team:</h4>
+                {userTeams.length > 0 ? (
+                  <div className="flex flex-col gap-2">
+                    {userTeams.map(t => (
+                      <Button key={t.id} variant="secondary" onClick={() => handleJoinAsTeam(t)} className="w-full text-left">
+                        {t.name} ({t.members.length} members)
+                      </Button>
+                    ))}
+                    <Button variant="secondary" onClick={() => setShowTeamSelect(false)} className="mt-2 text-muted">Cancel</Button>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-sm text-muted mb-2">You don't captain any teams yet.</p>
+                    <Button variant="secondary" onClick={() => navigate('/teams')} className="w-full">Create Team</Button>
+                    <Button variant="secondary" onClick={() => setShowTeamSelect(false)} className="mt-2 text-muted">Cancel</Button>
+                  </div>
+                )}
+              </div>
+            ) : isJoined ? (
               <Button variant="secondary" className="w-full" disabled>You're playing!</Button>
             ) : isFull ? (
               <Button variant="secondary" className="w-full" disabled>Match Full</Button>
             ) : (
-              <Button variant="primary" className="w-full" onClick={handleJoin} disabled={teamSize > availableSpots}>
-                Pay & Join {teamSize > 1 ? 'Team' : 'Match'}
-              </Button>
+              <div className="flex flex-col gap-3">
+                <Button variant="primary" className="w-full" onClick={handleJoin} disabled={teamSize > availableSpots}>
+                  Pay & Join {teamSize > 1 ? 'Match' : 'Match'}
+                </Button>
+                {isAuthenticated && (
+                  <Button variant="secondary" className="w-full border-primary text-primary" onClick={() => setShowTeamSelect(true)}>
+                    Join as Team
+                  </Button>
+                )}
+              </div>
             )}
             <p className="text-sm text-muted text-center mt-4">
               Free cancellation up to 48 hours before kick-off.

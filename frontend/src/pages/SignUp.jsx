@@ -22,7 +22,7 @@ export default function SignUp({ onLogin }) {
     })
     .then(user => {
       onLogin(user);
-      navigate('/');
+      navigate('/games');
     })
     .catch(err => alert("Error creating account or email already exists!"));
   };

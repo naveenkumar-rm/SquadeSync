@@ -12,10 +12,20 @@ import SignUp from './pages/SignUp';
 import MyGames from './pages/MyGames';
 import ContactUs from './pages/ContactUs';
 import Profile from './pages/Profile';
+import TeamsPage from './pages/TeamsPage';
+import PlayersPage from './pages/PlayersPage';
 
 function App() {
   const [matches, setMatches] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      return savedUser && savedUser !== 'undefined' ? JSON.parse(savedUser) : null;
+    } catch (e) {
+      console.error("Error parsing user from localStorage:", e);
+      return null;
+    }
+  });
   const isAuthenticated = currentUser !== null;
 
   useEffect(() => {
@@ -27,7 +37,7 @@ function App() {
 
   const addMatch = (newMatch) => {
     newMatch.id = 'm' + Math.floor(Math.random() * 10000);
-    newMatch.host = currentUser;
+    newMatch.host = { id: currentUser.id };
     fetch('http://localhost:8081/api/matches', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -53,8 +63,18 @@ function App() {
     .catch(err => console.error("Error joining match:", err));
   };
 
-  const login = (user) => setCurrentUser(user);
-  const logout = () => setCurrentUser(null);
+  const login = (user) => {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    setCurrentUser(user);
+  };
+  const logout = () => {
+    localStorage.removeItem('currentUser');
+    setCurrentUser(null);
+  };
+  const updateUser = (updatedUser) => {
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    setCurrentUser(updatedUser);
+  };
 
   return (
     <Router>
@@ -62,22 +82,26 @@ function App() {
         <Navbar isAuthenticated={isAuthenticated} currentUser={currentUser} onLogout={logout} />
         <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/games" element={<GamesFeed matches={matches} />} />
+            <Route path="/" element={isAuthenticated ? <Navigate to="/games" replace /> : <LandingPage />} />
+            <Route path="/games" element={<GamesFeed matches={matches} currentUser={currentUser} />} />
             <Route path="/map" element={<MapPage matches={matches} />} />
             <Route path="/health" element={<HealthBenefits />} />
             <Route path="/contact" element={<ContactUs />} />
-            <Route path="/match/:id" element={<MatchDetails matches={matches} joinMatch={joinMatch} isAuthenticated={isAuthenticated} />} />
+            <Route path="/match/:id" element={<MatchDetails matches={matches} joinMatch={joinMatch} isAuthenticated={isAuthenticated} currentUser={currentUser} />} />
             
             {/* Protected Route */}
             <Route path="/create" element={
               isAuthenticated ? <CreateMatch addMatch={addMatch} /> : <Navigate to="/signin" />
             } />
-            <Route path="/my-games" element={
-              isAuthenticated ? <MyGames matches={matches} currentUser={currentUser} isAuthenticated={isAuthenticated} /> : <Navigate to="/signin" />
+            <Route path="/teams" element={
+              isAuthenticated ? <TeamsPage currentUser={currentUser} /> : <Navigate to="/signin" />
             } />
+            <Route path="/players" element={
+              isAuthenticated ? <PlayersPage currentUser={currentUser} updateUser={updateUser} /> : <Navigate to="/signin" />
+            } />
+            <Route path="/my-games" element={<Navigate to="/profile" replace />} />
             <Route path="/profile" element={
-              isAuthenticated ? <Profile currentUser={currentUser} /> : <Navigate to="/signin" />
+              isAuthenticated ? <Profile currentUser={currentUser} matches={matches} updateUser={updateUser} /> : <Navigate to="/signin" />
             } />
             
             {/* Auth Routes */}

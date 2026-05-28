@@ -21,7 +21,7 @@ export default function SignIn({ onLogin }) {
     })
     .then(user => {
       onLogin(user);
-      navigate('/');
+      navigate('/games');
     })
     .catch(err => alert("Invalid email or password!"));
   };

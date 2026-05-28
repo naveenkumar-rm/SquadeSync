@@ -1,21 +1,40 @@
-import React, { useState, useMemo } from 'react';
-import { Map, MapPinOff, MapPin, Plus } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Map, MapPinOff, MapPin, Plus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MatchCard from '../components/MatchCard';
 import DateSelector from '../components/DateSelector';
 import GamesMap from '../components/GamesMap';
 import './GamesFeed.css';
 
-export default function GamesFeed({ matches }) {
+export default function GamesFeed({ matches, currentUser }) {
   const [selectedDate, setSelectedDate] = useState(null); // null means 'All Dates'
   const [sportFilter, setSportFilter] = useState('All');
   const [genderFilter, setGenderFilter] = useState('Any');
   const [timeFilter, setTimeFilter] = useState('Any');
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [locationSearch, setLocationSearch] = useState('');
+  const [friendsOnly, setFriendsOnly] = useState(false);
+  const [followingIds, setFollowingIds] = useState([]);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetch(`http://localhost:8081/api/users/${currentUser.id}/following`)
+        .then(res => res.json())
+        .then(data => setFollowingIds(data.map(u => u.id)))
+        .catch(err => console.error("Error fetching following:", err));
+    }
+  }, [currentUser]);
 
   const filteredMatches = useMemo(() => {
     return matches.filter(match => {
+      // 0. Hide past matches
+      if (match.date) {
+        const matchDate = new Date(match.date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (matchDate < today) return false;
+      }
+
       // 1. Date Filter
       if (selectedDate && match.date !== selectedDate) return false;
       
@@ -43,9 +62,16 @@ export default function GamesFeed({ matches }) {
         if (!loc.includes(query) && !title.includes(query)) return false;
       }
 
+      // 6. Friends Only Filter
+      if (friendsOnly && currentUser) {
+        const isHostFriend = followingIds.includes(match.host?.id);
+        const isPlayerFriend = match.currentPlayers?.some(p => followingIds.includes(p.id));
+        if (!isHostFriend && !isPlayerFriend) return false;
+      }
+
       return true;
     });
-  }, [matches, selectedDate, sportFilter, genderFilter, timeFilter, locationSearch]);
+  }, [matches, selectedDate, sportFilter, genderFilter, timeFilter, locationSearch, friendsOnly, followingIds, currentUser]);
 
   return (
     <div className="games-feed-page">
@@ -107,7 +133,25 @@ export default function GamesFeed({ matches }) {
             <button className={`sport-tab ${sportFilter === 'Cricket' ? 'active' : ''}`} onClick={() => setSportFilter('Cricket')}>Cricket</button>
           </div>
           
-          <div className="dropdown-filters">
+          <div className="dropdown-filters" style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            {currentUser && (
+              <button 
+                className="btn-secondary"
+                onClick={() => setFriendsOnly(!friendsOnly)}
+                style={{ 
+                  display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                  padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)',
+                  backgroundColor: friendsOnly ? 'rgba(34, 197, 94, 0.1)' : 'var(--color-surface)',
+                  color: friendsOnly ? 'var(--color-primary)' : 'var(--color-text)',
+                  border: friendsOnly ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
+                  fontWeight: 500, transition: 'all 0.2s', cursor: 'pointer'
+                }}
+              >
+                <Users size={16} />
+                {friendsOnly ? "Friends' Games" : "All Games"}
+              </button>
+            )}
+
             <select value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="filter-select">
               <option value="Any">Any Gender</option>
               <option value="Mixed">Mixed</option>

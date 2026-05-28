@@ -30,10 +30,10 @@ export default function Navbar({ isAuthenticated, currentUser, onLogout }) {
         
         <div className="navbar-links flex items-center gap-6">
           <Link to="/games" className="nav-link">Find Games</Link>
+          <Link to="/teams" className="nav-link">Teams</Link>
+          <Link to="/players" className="nav-link">Players</Link>
           
-          {isAuthenticated && (
-            <Link to="/my-games" className="nav-link">My Games</Link>
-          )}
+          {/* My Games link removed, accessible via Profile */}
 
           <Link to="/contact" className="nav-link hidden md:block">Contact Us</Link>
           

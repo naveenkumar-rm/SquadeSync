@@ -46,6 +46,16 @@ public class MatchController {
         }
     }
 
+    @PostMapping("/{matchId}/join-team/{teamId}")
+    public ResponseEntity<GameMatch> joinMatchAsTeam(@PathVariable String matchId, @PathVariable String teamId) {
+        try {
+            GameMatch updatedMatch = matchService.joinMatchAsTeam(matchId, teamId);
+            return ResponseEntity.ok(updatedMatch);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMatch(@PathVariable String id) {
         matchService.deleteMatch(id);
