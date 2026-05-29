@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Map, MapPinOff, MapPin, Plus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MatchCard from '../components/MatchCard';
@@ -48,6 +48,7 @@ export default function GamesFeed({ matches, currentUser }) {
 
       // 4. Time Filter
       if (timeFilter !== 'Any') {
+        if (!match.time) return false;
         const hour = parseInt(match.time.split(':')[0], 10);
         if (timeFilter === 'Morning' && hour >= 12) return false;
         if (timeFilter === 'Afternoon' && (hour < 12 || hour >= 17)) return false;
@@ -131,6 +132,7 @@ export default function GamesFeed({ matches, currentUser }) {
             <button className={`sport-tab ${sportFilter === 'All' ? 'active' : ''}`} onClick={() => setSportFilter('All')}>All Sports</button>
             <button className={`sport-tab ${sportFilter === 'Football' ? 'active' : ''}`} onClick={() => setSportFilter('Football')}>Football</button>
             <button className={`sport-tab ${sportFilter === 'Cricket' ? 'active' : ''}`} onClick={() => setSportFilter('Cricket')}>Cricket</button>
+            <button className={`sport-tab ${sportFilter === 'Others' ? 'active' : ''}`} onClick={() => setSportFilter('Others')}>Others</button>
           </div>
           
           <div className="dropdown-filters" style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>

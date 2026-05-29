@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import { Users, Shield, Plus } from 'lucide-react';
 import './TeamsPage.css';
@@ -16,11 +16,6 @@ export default function TeamsPage({ currentUser }) {
 
   const [editingTeamId, setEditingTeamId] = useState(null);
 
-  useEffect(() => {
-    fetchTeams();
-    fetchAllUsers();
-  }, []);
-
   const fetchTeams = () => {
     fetch('http://localhost:8081/api/teams')
       .then(res => res.json())
@@ -34,6 +29,11 @@ export default function TeamsPage({ currentUser }) {
       .then(data => setAllUsers(data))
       .catch(err => console.error("Error fetching users:", err));
   };
+
+  useEffect(() => {
+    fetchTeams();
+    fetchAllUsers();
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

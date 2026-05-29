@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { CalendarX } from 'lucide-react';
 import DreamMatchCard from '../components/DreamMatchCard';
@@ -6,14 +6,13 @@ import Button from '../components/Button';
 import './MyGames.css';
 
 export default function MyGames({ matches, isAuthenticated, currentUser }) {
-  if (!isAuthenticated) {
-    return <Navigate to="/signin" />;
-  }
-
   const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming', 'live', 'completed'
 
   const { upcomingGames, liveGames, completedGames } = useMemo(() => {
-    const today = new Date(); 
+    if (!isAuthenticated || !currentUser) {
+      return { upcomingGames: [], liveGames: [], completedGames: [] };
+    }
+    const today = new Date();
 
     // Find all matches where current user is a player
     const userMatches = matches.filter(m => 
@@ -50,7 +49,11 @@ export default function MyGames({ matches, isAuthenticated, currentUser }) {
     });
 
     return { upcomingGames: upcoming, liveGames: live, completedGames: completed };
-  }, [matches, currentUser]);
+  }, [matches, currentUser, isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" />;
+  }
 
   const getDisplayedMatches = () => {
     if (activeTab === 'upcoming') return upcomingGames;

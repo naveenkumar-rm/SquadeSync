@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
@@ -9,7 +9,6 @@ import HealthBenefits from './pages/HealthBenefits';
 import CreateMatch from './pages/CreateMatch';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import MyGames from './pages/MyGames';
 import ContactUs from './pages/ContactUs';
 import Profile from './pages/Profile';
 import TeamsPage from './pages/TeamsPage';

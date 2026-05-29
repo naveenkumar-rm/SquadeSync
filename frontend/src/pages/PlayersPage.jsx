@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import { Search, UserPlus, UserCheck } from 'lucide-react';
 import './PlayersPage.css';
@@ -9,25 +9,25 @@ export default function PlayersPage({ currentUser, updateUser }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
+    const fetchUsers = () => {
+      fetch('http://localhost:8081/api/users')
+        .then(res => res.json())
+        .then(data => setUsers(data))
+        .catch(err => console.error("Error fetching users:", err));
+    };
+
+    const fetchFollowing = () => {
+      fetch(`http://localhost:8081/api/users/${currentUser.id}/following`)
+        .then(res => res.json())
+        .then(data => setFollowingIds(data.map(u => u.id)))
+        .catch(err => console.error("Error fetching following list:", err));
+    };
+
     fetchUsers();
     if (currentUser) {
       fetchFollowing();
     }
   }, [currentUser]);
-
-  const fetchUsers = () => {
-    fetch('http://localhost:8081/api/users')
-      .then(res => res.json())
-      .then(data => setUsers(data))
-      .catch(err => console.error("Error fetching users:", err));
-  };
-
-  const fetchFollowing = () => {
-    fetch(`http://localhost:8081/api/users/${currentUser.id}/following`)
-      .then(res => res.json())
-      .then(data => setFollowingIds(data.map(u => u.id)))
-      .catch(err => console.error("Error fetching following list:", err));
-  };
 
   const handleFollow = (userId) => {
     fetch(`http://localhost:8081/api/users/${currentUser.id}/follow/${userId}`, {

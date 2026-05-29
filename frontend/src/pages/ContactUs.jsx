@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import Button from '../components/Button';
 import './ContactUs.css';

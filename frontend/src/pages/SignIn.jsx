@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import './Auth.css';
@@ -23,7 +23,7 @@ export default function SignIn({ onLogin }) {
       onLogin(user);
       navigate('/games');
     })
-    .catch(err => alert("Invalid email or password!"));
+    .catch(() => alert("Invalid email or password!"));
   };
 
   return (

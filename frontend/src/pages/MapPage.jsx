@@ -1,4 +1,3 @@
-import React from 'react';
 import GamesMap from '../components/GamesMap';
 
 export default function MapPage({ matches }) {

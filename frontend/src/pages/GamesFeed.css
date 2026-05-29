@@ -25,6 +25,12 @@
   border-radius: var(--radius-full);
   padding: 0.25rem;
   border: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.sport-tabs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .sport-tab {

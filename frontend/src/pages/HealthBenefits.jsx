@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Brain, Users, Activity, Smile, Dumbbell } from 'lucide-react';
 import Button from '../components/Button';

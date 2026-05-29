@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MapPin, Calendar, Clock, CreditCard, Shield, Info } from 'lucide-react';
+import { MapPin, Calendar, CreditCard, Shield, Info } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -25,7 +25,7 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated, curr
   const [userTeams, setUserTeams] = useState([]);
   const [showTeamSelect, setShowTeamSelect] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated && currentUser) {
       fetch('http://localhost:8081/api/teams')
         .then(res => res.json())
@@ -37,11 +37,11 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated, curr
     }
   }, [isAuthenticated, currentUser]);
 
+  const [teamSize, setTeamSize] = useState(1);
+
   if (!match) {
     return <div className="container py-12 text-center text-xl">Match not found</div>;
   }
-
-  const [teamSize, setTeamSize] = useState(1);
   const availableSpots = match.maxPlayers - match.currentPlayers.length;
   const isFull = availableSpots <= 0;
   // Check if current user is already in the game 
@@ -74,8 +74,7 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated, curr
       }
       throw new Error('Failed to join as team');
     })
-    .then(updatedMatch => {
-      // In a real app we'd update global state here, but we can just reload or call a callback
+    .then(() => {
       window.location.reload();
     })
     .catch(err => {

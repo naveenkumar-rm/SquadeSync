@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import './Auth.css';
@@ -24,7 +24,7 @@ export default function SignUp({ onLogin }) {
       onLogin(user);
       navigate('/games');
     })
-    .catch(err => alert("Error creating account or email already exists!"));
+    .catch(() => alert("Error creating account or email already exists!"));
   };
 
   return (

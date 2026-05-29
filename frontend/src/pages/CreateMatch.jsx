@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LocateFixed } from 'lucide-react';
 import Button from '../components/Button';
@@ -148,6 +148,7 @@ export default function CreateMatch({ addMatch }) {
               <select required name="sport" value={formData.sport} onChange={handleChange} className="form-select">
                 <option value="Football">Football</option>
                 <option value="Cricket">Cricket</option>
+                <option value="Others">Others</option>
               </select>
             </div>
             <div className="form-group">

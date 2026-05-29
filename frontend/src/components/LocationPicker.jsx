@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import 'leaflet/dist/leaflet.css';
@@ -81,12 +81,14 @@ function LocationMarker({ position, setPosition, onLocationSelect }) {
 }
 
 export default function LocationPicker({ onLocationSelect, lat, lng, defaultLocation = [20.5937, 78.9629] }) {
-  const [position, setPosition] = useState(null);
+  const [position, setPosition] = useState(lat && lng ? { lat, lng } : null);
 
   useEffect(() => {
-    if (lat && lng) {
+    if (lat && lng && (!position || position.lat !== lat || position.lng !== lng)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPosition({ lat, lng });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, lng]);
 
   return (
