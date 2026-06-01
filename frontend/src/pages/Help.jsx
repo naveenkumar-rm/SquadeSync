@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import Button from '../components/Button';
-import './ContactUs.css';
+import './Help.css';
 
-export default function ContactUs() {
+export default function Help() {
   const [status, setStatus] = useState('idle'); // 'idle', 'submitting', 'success', 'error'
   const [formData, setFormData] = useState({
     name: '',
@@ -42,9 +42,9 @@ export default function ContactUs() {
   return (
     <div className="contact-page container py-12" style={{ maxWidth: '800px' }}>
       <div className="text-center mb-10 fade-in-up">
-        <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
+        <h1 className="text-4xl font-bold mb-4">Help & Support</h1>
         <p className="text-muted text-lg max-w-2xl mx-auto">
-          Have a question about PitchConnect, need help organizing a match, or want to report an issue? Drop us a message and our team will get back to you shortly.
+          Have a question about Squadsync, need help organizing a match, or want to report an issue? Drop us a message and our team will get back to you shortly.
         </p>
       </div>
 

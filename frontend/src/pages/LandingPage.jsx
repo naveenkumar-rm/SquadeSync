@@ -72,7 +72,7 @@ export default function LandingPage() {
 
       <section className="features-section container">
         <div className="features-header text-center fade-in-up">
-          <h2>Why PitchConnect?</h2>
+          <h2>Why Squadsync?</h2>
           <p>Everything you need to play the beautiful game, built right in.</p>
         </div>
         
@@ -100,11 +100,13 @@ export default function LandingPage() {
         <div className="container relative z-10 text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to hit the pitch?</h2>
           <p className="text-lg text-muted mb-8 max-w-2xl mx-auto">
-            Join thousands of players already using PitchConnect to find and organize their weekly games.
+            Join thousands of players already using Squadsync to find and organize their weekly games.
           </p>
-          <Link to="/signup">
-            <Button className="cta-button primary">Create Free Account</Button>
-          </Link>
+          <div className="flex justify-center mt-2">
+            <Link to="/signup">
+              <Button className="cta-button primary">Create Free Account</Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

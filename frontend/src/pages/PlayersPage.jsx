@@ -64,7 +64,7 @@ export default function PlayersPage({ currentUser, updateUser }) {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold">Players Directory</h1>
-            <p className="text-muted mt-2">Find and follow other players on PitchConnect.</p>
+            <p className="text-muted mt-2">Find and follow other players on Squadsync.</p>
           </div>
         </div>
 

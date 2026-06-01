@@ -29,10 +29,13 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
   
   const [formData, setFormData] = useState({
     name: currentUser?.name || '',
+    username: currentUser?.username || '',
     age: currentUser?.age || '',
     bio: currentUser?.bio || '',
     avatar: currentUser?.avatar || ''
   });
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
 
   const { upcomingGames, liveGames, completedGames } = useMemo(() => {
     if (!currentUser) return { upcomingGames: [], liveGames: [], completedGames: [] };
@@ -79,7 +82,7 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
 
   const safeName = currentUser.name || 'User';
   const initial = safeName.charAt(0).toUpperCase();
-  const handle = `@${safeName.toLowerCase().replace(/\s+/g, '-')}`;
+  const handle = currentUser.username ? `@${currentUser.username}` : `@${safeName.toLowerCase().replace(/\s+/g, '-')}`;
 
   const getDisplayedMatches = () => {
     if (activeTab === 'upcoming') return upcomingGames;
@@ -94,24 +97,64 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSaveProfile = () => {
-    fetch(`http://localhost:8081/api/users/${currentUser.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...currentUser,
-        name: formData.name,
-        age: formData.age ? parseInt(formData.age, 10) : null,
-        bio: formData.bio,
-        avatar: formData.avatar
-      })
-    })
-    .then(res => res.json())
-    .then(updatedUser => {
-      if (updateUser) updateUser(updatedUser);
-      setEditMode(false);
-    })
-    .catch(err => console.error("Error updating profile:", err));
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      let finalAvatarUrl = formData.avatar;
+      
+      if (avatarFile) {
+        const fileData = new FormData();
+        fileData.append('file', avatarFile);
+        
+        const uploadRes = await fetch(`http://localhost:8081/api/users/${currentUser.id}/avatar`, {
+          method: 'POST',
+          body: fileData
+        });
+        
+        if (uploadRes.ok) {
+          const updatedUserWithAvatar = await uploadRes.json();
+          finalAvatarUrl = updatedUserWithAvatar.avatar;
+        } else {
+          console.error("Failed to upload avatar");
+          alert("Failed to upload photo. It might be too large.");
+          return;
+        }
+      }
+
+      const res = await fetch(`http://localhost:8081/api/users/${currentUser.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...currentUser,
+          name: formData.name,
+          username: formData.username,
+          age: formData.age ? parseInt(formData.age, 10) : null,
+          bio: formData.bio,
+          avatar: finalAvatarUrl
+        })
+      });
+      
+      if (res.ok) {
+        const updatedUser = await res.json();
+        if (updateUser) updateUser(updatedUser);
+        setEditMode(false);
+        setAvatarFile(null);
+        setAvatarPreview(null);
+      } else {
+        const errData = await res.json();
+        console.error("Failed to update profile:", errData);
+        alert("Failed to save profile. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+    }
   };
 
   const renderModal = () => {
@@ -158,11 +201,20 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
         
         {/* Left Column: Sidebar with Avatar and Stats */}
         <aside className="profile-sidebar fade-in-up">
-          <div className="profile-avatar-large" style={{ overflow: 'hidden' }}>
-            {currentUser.avatar ? (
+          <div className="profile-avatar-large" style={{ overflow: 'hidden', position: 'relative', cursor: editMode ? 'pointer' : 'default' }}>
+            {avatarPreview ? (
+              <img src={avatarPreview} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : currentUser.avatar ? (
               <img src={currentUser.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
               initial
+            )}
+            {editMode && (
+              <label style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)', color: 'white', cursor: 'pointer', margin: 0, fontSize: '0.875rem', fontWeight: 'bold' }}>
+                <Edit2 size={20} style={{ marginBottom: '4px' }} />
+                <span>Change Photo</span>
+                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+              </label>
             )}
           </div>
           
@@ -187,6 +239,10 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
                 <input type="text" name="name" value={formData.name} onChange={handleEditChange} />
               </div>
               <div className="form-group mb-4">
+                <label>Username</label>
+                <input type="text" name="username" value={formData.username} onChange={handleEditChange} />
+              </div>
+              <div className="form-group mb-4">
                 <label>Age</label>
                 <input type="number" name="age" value={formData.age} onChange={handleEditChange} />
               </div>
@@ -194,11 +250,7 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
                 <label>Bio</label>
                 <textarea name="bio" value={formData.bio} onChange={handleEditChange} rows="3" />
               </div>
-              <div className="form-group mb-6">
-                <label>Photo URL</label>
-                <input type="text" name="avatar" value={formData.avatar} onChange={handleEditChange} />
-              </div>
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-end mt-6">
                 <Button variant="secondary" onClick={() => setEditMode(false)}>Cancel</Button>
                 <Button variant="primary" onClick={handleSaveProfile}>Save</Button>
               </div>

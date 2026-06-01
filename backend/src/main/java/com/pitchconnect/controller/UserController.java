@@ -5,7 +5,15 @@ import com.pitchconnect.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 import java.util.List;
 
 @RestController
@@ -47,6 +55,7 @@ public class UserController {
         return userService.getUserById(id)
                 .map(existingUser -> {
                     if (userUpdates.getName() != null) existingUser.setName(userUpdates.getName());
+                    if (userUpdates.getUsername() != null) existingUser.setUsername(userUpdates.getUsername());
                     if (userUpdates.getAvatar() != null) existingUser.setAvatar(userUpdates.getAvatar());
                     if (userUpdates.getAge() != null) existingUser.setAge(userUpdates.getAge());
                     if (userUpdates.getBio() != null) existingUser.setBio(userUpdates.getBio());
@@ -99,5 +108,36 @@ public class UserController {
                     return ResponseEntity.ok(followers);
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/avatar")
+    public ResponseEntity<User> uploadAvatar(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+        return userService.getUserById(id).map(user -> {
+            try {
+                // Ensure the uploads directory exists
+                Path uploadDir = Paths.get("uploads/avatars");
+                if (!Files.exists(uploadDir)) {
+                    Files.createDirectories(uploadDir);
+                }
+
+                // Generate a unique file name
+                String originalFilename = StringUtils.cleanPath(file.getOriginalFilename() != null ? file.getOriginalFilename() : "avatar.jpg");
+                String extension = originalFilename.contains(".") ? originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
+                String fileName = UUID.randomUUID().toString() + extension;
+                
+                // Save the file
+                Path targetLocation = uploadDir.resolve(fileName);
+                Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+                // Update the user's avatar URL
+                String fileUrl = "http://localhost:8081/uploads/avatars/" + fileName;
+                user.setAvatar(fileUrl);
+                User savedUser = userService.saveUser(user);
+                
+                return ResponseEntity.ok(savedUser);
+            } catch (IOException ex) {
+                return ResponseEntity.internalServerError().<User>build();
+            }
+        }).orElse(ResponseEntity.notFound().build());
     }
 }

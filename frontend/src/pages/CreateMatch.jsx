@@ -63,7 +63,7 @@ export default function CreateMatch({ addMatch }) {
     if (!query || query.length < 5) return;
 
     const timeoutId = setTimeout(() => {
-      // Add countrycodes=in to restrict to India, improving accuracy for PitchConnect
+      // Add countrycodes=in to restrict to India, improving accuracy for Squadsync
       fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1&countrycodes=in`)
         .then(res => res.json())
         .then(data => {

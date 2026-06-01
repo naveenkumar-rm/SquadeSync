@@ -6,7 +6,7 @@ import DateSelector from '../components/DateSelector';
 import GamesMap from '../components/GamesMap';
 import './GamesFeed.css';
 
-export default function GamesFeed({ matches, currentUser }) {
+export default function GamesFeed({ matches, currentUser, isPinkMode }) {
   const [selectedDate, setSelectedDate] = useState(null); // null means 'All Dates'
   const [sportFilter, setSportFilter] = useState('All');
   const [genderFilter, setGenderFilter] = useState('Any');
@@ -38,13 +38,16 @@ export default function GamesFeed({ matches, currentUser }) {
       // 1. Date Filter
       if (selectedDate && match.date !== selectedDate) return false;
       
+      // Pink Mode Enforcement
+      const matchGender = match.gender || 'Mixed';
+      if (isPinkMode && matchGender !== 'Women Only') return false;
+
       // 2. Sport Filter
       const matchSport = match.sport || 'Football';
       if (sportFilter !== 'All' && matchSport !== sportFilter) return false;
 
       // 3. Gender Filter
-      const matchGender = match.gender || 'Mixed';
-      if (genderFilter !== 'Any' && matchGender !== genderFilter) return false;
+      if (!isPinkMode && genderFilter !== 'Any' && matchGender !== genderFilter) return false;
 
       // 4. Time Filter
       if (timeFilter !== 'Any') {
@@ -72,7 +75,7 @@ export default function GamesFeed({ matches, currentUser }) {
 
       return true;
     });
-  }, [matches, selectedDate, sportFilter, genderFilter, timeFilter, locationSearch, friendsOnly, followingIds, currentUser]);
+  }, [matches, selectedDate, sportFilter, genderFilter, timeFilter, locationSearch, friendsOnly, followingIds, currentUser, isPinkMode]);
 
   return (
     <div className="games-feed-page">
@@ -154,12 +157,14 @@ export default function GamesFeed({ matches, currentUser }) {
               </button>
             )}
 
-            <select value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="filter-select">
-              <option value="Any">Any Gender</option>
-              <option value="Mixed">Mixed</option>
-              <option value="Men Only">Men Only</option>
-              <option value="Women Only">Women Only</option>
-            </select>
+            {!isPinkMode && (
+              <select value={genderFilter} onChange={e => setGenderFilter(e.target.value)} className="filter-select">
+                <option value="Any">Any Gender</option>
+                <option value="Mixed">Mixed</option>
+                <option value="Men Only">Men Only</option>
+                <option value="Women Only">Women Only</option>
+              </select>
+            )}
 
             <select value={timeFilter} onChange={e => setTimeFilter(e.target.value)} className="filter-select">
               <option value="Any">Any Time</option>
