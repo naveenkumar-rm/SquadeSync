@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import './Auth.css';
+import { API_URL } from '../config';
 
 export default function SignIn({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -10,7 +11,7 @@ export default function SignIn({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8081/api/auth/signin', {
+    fetch(`${API_URL}/api/auth/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

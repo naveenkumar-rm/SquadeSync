@@ -13,6 +13,7 @@ import Help from './pages/Help';
 import Profile from './pages/Profile';
 import TeamsPage from './pages/TeamsPage';
 import PlayersPage from './pages/PlayersPage';
+import { API_URL } from './config';
 
 function App() {
   const [matches, setMatches] = useState([]);
@@ -47,7 +48,7 @@ function App() {
   }, [isPinkMode]);
 
   useEffect(() => {
-    fetch('http://localhost:8081/api/matches')
+    fetch(`${API_URL}/api/matches`)
       .then(res => res.json())
       .then(data => setMatches(data))
       .catch(err => console.error("Error fetching matches:", err));
@@ -56,7 +57,7 @@ function App() {
   const addMatch = (newMatch) => {
     newMatch.id = 'm' + Math.floor(Math.random() * 10000);
     newMatch.host = { id: currentUser.id };
-    fetch('http://localhost:8081/api/matches', {
+    fetch(`${API_URL}/api/matches`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newMatch)
@@ -71,7 +72,7 @@ function App() {
       alert("Please sign in to join a match.");
       return;
     }
-    fetch(`http://localhost:8081/api/matches/${matchId}/join?userId=${currentUser.id}`, {
+    fetch(`${API_URL}/api/matches/${matchId}/join?userId=${currentUser.id}`, {
       method: 'POST'
     })
     .then(res => res.json())

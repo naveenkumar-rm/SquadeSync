@@ -5,6 +5,7 @@ import DreamMatchCard from '../components/DreamMatchCard';
 import Button from '../components/Button';
 import './Profile.css';
 import './MyGames.css';
+import { API_URL } from '../config';
 
 export default function Profile({ currentUser, matches = [], updateUser }) {
   const [activeTab, setActiveTab] = useState('upcoming');
@@ -15,12 +16,12 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
   
   useEffect(() => {
     if (currentUser) {
-      fetch(`http://localhost:8081/api/users/${currentUser.id}/following`)
+      fetch(`${API_URL}/api/users/${currentUser.id}/following`)
         .then(res => res.json())
         .then(data => setFollowingList(data))
         .catch(err => console.error("Error fetching following:", err));
 
-      fetch(`http://localhost:8081/api/users/${currentUser.id}/followers`)
+      fetch(`${API_URL}/api/users/${currentUser.id}/followers`)
         .then(res => res.json())
         .then(data => setFollowersList(data))
         .catch(err => console.error("Error fetching followers:", err));
@@ -113,7 +114,7 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
         const fileData = new FormData();
         fileData.append('file', avatarFile);
         
-        const uploadRes = await fetch(`http://localhost:8081/api/users/${currentUser.id}/avatar`, {
+        const uploadRes = await fetch(`${API_URL}/api/users/${currentUser.id}/avatar`, {
           method: 'POST',
           body: fileData
         });
@@ -128,7 +129,7 @@ export default function Profile({ currentUser, matches = [], updateUser }) {
         }
       }
 
-      const res = await fetch(`http://localhost:8081/api/users/${currentUser.id}`, {
+      const res = await fetch(`${API_URL}/api/users/${currentUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

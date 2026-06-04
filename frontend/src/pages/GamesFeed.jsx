@@ -5,6 +5,7 @@ import MatchCard from '../components/MatchCard';
 import DateSelector from '../components/DateSelector';
 import GamesMap from '../components/GamesMap';
 import './GamesFeed.css';
+import { API_URL } from '../config';
 
 export default function GamesFeed({ matches, currentUser, isPinkMode }) {
   const [selectedDate, setSelectedDate] = useState(null); // null means 'All Dates'
@@ -18,7 +19,7 @@ export default function GamesFeed({ matches, currentUser, isPinkMode }) {
 
   useEffect(() => {
     if (currentUser) {
-      fetch(`http://localhost:8081/api/users/${currentUser.id}/following`)
+      fetch(`${API_URL}/api/users/${currentUser.id}/following`)
         .then(res => res.json())
         .then(data => setFollowingIds(data.map(u => u.id)))
         .catch(err => console.error("Error fetching following:", err));

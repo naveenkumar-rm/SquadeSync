@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import { Users, Shield, Plus } from 'lucide-react';
 import './TeamsPage.css';
+import { API_URL } from '../config';
 
 export default function TeamsPage({ currentUser }) {
   const [teams, setTeams] = useState([]);
@@ -17,14 +18,14 @@ export default function TeamsPage({ currentUser }) {
   const [editingTeamId, setEditingTeamId] = useState(null);
 
   const fetchTeams = () => {
-    fetch('http://localhost:8081/api/teams')
+    fetch(`${API_URL}/api/teams`)
       .then(res => res.json())
       .then(data => setTeams(data))
       .catch(err => console.error("Error fetching teams:", err));
   };
 
   const fetchAllUsers = () => {
-    fetch('http://localhost:8081/api/users')
+    fetch(`${API_URL}/api/users`)
       .then(res => res.json())
       .then(data => setAllUsers(data))
       .catch(err => console.error("Error fetching users:", err));
@@ -47,7 +48,7 @@ export default function TeamsPage({ currentUser }) {
     e.preventDefault();
     if (!currentUser) return alert('You must be logged in to create a team.');
 
-    fetch('http://localhost:8081/api/teams', {
+    fetch(`${API_URL}/api/teams`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -71,7 +72,7 @@ export default function TeamsPage({ currentUser }) {
   const handleJoinTeam = (teamId, userId = currentUser?.id) => {
     if (!userId) return alert('You must be logged in to join a team.');
 
-    fetch(`http://localhost:8081/api/teams/${teamId}/members/${userId}`, {
+    fetch(`${API_URL}/api/teams/${teamId}/members/${userId}`, {
       method: 'POST'
     })
     .then(res => {
@@ -85,7 +86,7 @@ export default function TeamsPage({ currentUser }) {
   };
 
   const handleRemovePlayer = (teamId, userId) => {
-    fetch(`http://localhost:8081/api/teams/${teamId}/members/${userId}`, {
+    fetch(`${API_URL}/api/teams/${teamId}/members/${userId}`, {
       method: 'DELETE'
     })
     .then(res => {
@@ -99,7 +100,7 @@ export default function TeamsPage({ currentUser }) {
   };
 
   const handleChangeCaptain = (teamId, userId) => {
-    fetch(`http://localhost:8081/api/teams/${teamId}/captain/${userId}`, {
+    fetch(`${API_URL}/api/teams/${teamId}/captain/${userId}`, {
       method: 'PUT'
     })
     .then(res => {
@@ -268,7 +269,7 @@ export default function TeamsPage({ currentUser }) {
                               style={{ color: '#ff4b4b', borderColor: '#ff4b4b' }} 
                               onClick={() => {
                                 if(window.confirm('Are you sure you want to delete this team?')) {
-                                  fetch(`http://localhost:8081/api/teams/${team.id}`, { method: 'DELETE' }).then(() => fetchTeams());
+                                  fetch(`${API_URL}/api/teams/${team.id}`, { method: 'DELETE' }).then(() => fetchTeams());
                                 }
                               }}
                             >

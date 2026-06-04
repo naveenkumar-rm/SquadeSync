@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import Button from '../components/Button';
 import './Help.css';
+import { API_URL } from '../config';
 
 export default function Help() {
   const [status, setStatus] = useState('idle'); // 'idle', 'submitting', 'success', 'error'
@@ -20,7 +21,7 @@ export default function Help() {
     e.preventDefault();
     setStatus('submitting');
 
-    fetch('http://localhost:8081/api/contact', {
+    fetch(`${API_URL}/api/contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

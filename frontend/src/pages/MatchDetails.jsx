@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Button from '../components/Button';
 import './MatchDetails.css';
+import { API_URL } from '../config';
 
 // Fix for default leaflet icons in React
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -27,7 +28,7 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated, curr
 
   useEffect(() => {
     if (isAuthenticated && currentUser) {
-      fetch('http://localhost:8081/api/teams')
+      fetch(`${API_URL}/api/teams`)
         .then(res => res.json())
         .then(data => {
           const myTeams = data.filter(t => t.captain?.id === currentUser.id);
@@ -65,7 +66,7 @@ export default function MatchDetails({ matches, joinMatch, isAuthenticated, curr
       return;
     }
 
-    fetch(`http://localhost:8081/api/matches/${match.id}/join-team/${team.id}`, {
+    fetch(`${API_URL}/api/matches/${match.id}/join-team/${team.id}`, {
       method: 'POST'
     })
     .then(res => {
