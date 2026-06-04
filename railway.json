@@ -1,5 +1,5 @@
 {
   "build": {
-    "rootDir": "/backend"
+    "rootDir": "backend"
   }
 }
