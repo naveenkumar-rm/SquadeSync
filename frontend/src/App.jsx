@@ -108,7 +108,7 @@ function App() {
         />
         <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <Routes>
-            <Route path="/" element={isAuthenticated ? <Navigate to="/games" replace /> : <LandingPage />} />
+            <Route path="/" element={isAuthenticated ? <Navigate to="/games" replace /> : <LandingPage isPinkMode={isPinkMode} setIsPinkMode={setIsPinkMode} />} />
             <Route path="/games" element={<GamesFeed matches={matches} currentUser={currentUser} isPinkMode={isPinkMode} />} />
             <Route path="/map" element={<MapPage matches={matches} />} />
             <Route path="/health" element={<HealthBenefits />} />

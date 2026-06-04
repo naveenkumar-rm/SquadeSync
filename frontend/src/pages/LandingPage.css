@@ -76,8 +76,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   color: var(--color-text);
   padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
@@ -194,9 +194,9 @@
 .hero-visual-card {
   width: 100%;
   max-width: 380px;
-  background: rgba(20, 20, 22, 0.8);
+  background: var(--color-surface);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(163, 230, 53, 0.2);
+  border: 1px solid var(--color-border);
   border-radius: 24px;
   padding: 2rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -247,9 +247,9 @@
   align-items: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-surface);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
 }
 
 .avatars-stack {
@@ -333,17 +333,17 @@
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--color-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
   border-radius: 24px;
   padding: 3rem 2.5rem;
   transition: all 0.3s ease;
 }
 
 .glass-panel:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(163, 230, 53, 0.3);
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
   transform: translateY(-5px);
 }
 
@@ -375,6 +375,6 @@
 .bottom-cta-section {
   position: relative;
   padding: 8rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  background: #000;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
 }

@@ -80,45 +80,29 @@ export default function GamesFeed({ matches, currentUser, isPinkMode }) {
   return (
     <div className="games-feed-page">
       <header className="games-feed-header" style={{ padding: '1rem 0', borderBottom: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <div className="container games-feed-header-inner">
           
-          <div className="location-search-bar" style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '0.6rem 1rem', flex: 1, maxWidth: '400px' }}>
-            <MapPin size={18} className="text-muted" style={{ marginRight: '0.5rem' }} />
+          <div className="location-search-bar">
+            <MapPin size={18} className="text-muted" style={{ marginRight: '0.5rem', flexShrink: 0 }} />
             <input 
               type="text" 
               placeholder="Nearby Bangalore, IN..." 
               value={locationSearch}
               onChange={e => setLocationSearch(e.target.value)}
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--color-text)', fontSize: '0.95rem', fontWeight: 500 }}
+              className="location-search-input"
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div className="games-feed-actions">
             <button 
               onClick={() => setIsMapVisible(!isMapVisible)} 
-              className="btn-secondary" 
-              style={{ 
-                display: 'flex', alignItems: 'center', gap: '0.5rem', 
-                padding: '0.6rem 1.25rem', borderRadius: 'var(--radius-md)',
-                backgroundColor: isMapVisible ? 'var(--color-primary)' : 'var(--color-surface)',
-                color: isMapVisible ? 'white' : 'var(--color-text)',
-                border: isMapVisible ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
-                fontWeight: 600, transition: 'all 0.2s', cursor: 'pointer'
-              }}
+              className={`btn-secondary map-toggle-btn ${isMapVisible ? 'active' : ''}`}
             >
               {isMapVisible ? <MapPinOff size={16} /> : <Map size={16} />}
               {isMapVisible ? 'Hide map' : 'Show map'}
             </button>
-            <Link to="/create">
-              <button 
-                className="btn-primary" 
-                style={{ 
-                  display: 'flex', alignItems: 'center', gap: '0.5rem', 
-                  padding: '0.6rem 1.25rem', borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'var(--color-primary)', color: 'white', border: 'none',
-                  fontWeight: 600, cursor: 'pointer', transition: 'opacity 0.2s'
-                }}
-              >
+            <Link to="/create" className="new-game-link">
+              <button className="btn-primary new-game-btn">
                 <Plus size={18} />
                 New game
               </button>
