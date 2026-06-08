@@ -1,1 +1,1 @@
-export const API_URL = import.meta.env.VITE_API_URL || 'https://squadesync-backend-production.up.railway.app';
+export const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:8081' : 'https://squadesync-backend-production.up.railway.app');
